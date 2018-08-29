@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.MenuDAO">
+
+    <resultMap id="all" type="com.baizhi.entity.Menu">
+        <id property="id" column="mid"/>
+        <result property="title" column="mt"/>
+        <result property="content" column="mc"/>
+        <result property="href" column="mh"/>
+        <result property="iconCls" column="mi"/>
+        <collection property="list" ofType="com.baizhi.entity.Menu">
+           <id property="id" column="cid"/>
+            <result property="title" column="cd"/>
+            <result property="content" column="cc"/>
+            <result property="href" column="ch"/>
+            <result property="iconCls" column="ci"/>
+        </collection>
+    </resultMap>
+    <select id="queryAllMenus" resultMap="all">
+            SELECT
+                m.id mid,
+                m.title mt,
+                m.content mc,
+                m.href mh,
+                m.iconCls mi,
+                c.id cid,
+                c.title cd,
+                c.content cc,
+                c.href ch,
+                c.iconCls ci
+            FROM
+                menu m
+            LEFT JOIN menu c ON c.parntld = m.id
+            WHERE m.id BETWEEN 1 AND 7
+    </select>
+
+</mapper>
+
+
+
+
+
+
+

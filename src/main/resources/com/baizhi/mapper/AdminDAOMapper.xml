@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.AdminDAO">
+
+    <select id="queryAdmin"  parameterType="Admin" resultType="Admin">
+        select id,username ,password from admin WHERE username=#{username} and password=#{password}
+    </select>
+    <insert id="save" parameterType="Admin">
+        INSERT into admin(username,password) VALUES (#{username},#{password})
+    </insert>
+    <delete id="deleteAdmin" parameterType="Admin">
+        DELETE from admin WHERE id=#{id}
+    </delete>
+</mapper>
+
+
+
+
+
+
+
