@@ -12,9 +12,13 @@
     </delete>
 
     <update id="update">
-        UPDATE banner set title=#{title},imgPath=#{imgPath},description=#{description},status=#{status},createDate=#{createDate} WHERE id=#{id}
+        UPDATE banner set id=#{id},title=#{title},imgPath=#{imgPath},description=#{description},status=#{status},createDate=#{createDate} WHERE id=#{id}
     </update>
+    <select id="query" resultType="java.lang.Integer">
+        select count(*) from banner
+    </select>
 </mapper>
+
 
 
 

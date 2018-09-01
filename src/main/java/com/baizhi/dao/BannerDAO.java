@@ -12,4 +12,5 @@ public interface BannerDAO {
     public void add(Banner banner);
     public void update(Banner banner);
     public void delete(Integer id);
+    public Integer query();
 }

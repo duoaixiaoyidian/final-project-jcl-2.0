@@ -1,6 +1,8 @@
 package com.baizhi.entity;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,6 +15,7 @@ public class Banner implements Serializable {
     private String imgPath;
     private String description;
     private String status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
     @Override
     public String toString() {
@@ -25,6 +28,7 @@ public class Banner implements Serializable {
                 ", createDate=" + createDate +
                 '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,7 +87,6 @@ public class Banner implements Serializable {
     }
 
     public String getImgPath() {
-
         return imgPath;
     }
 

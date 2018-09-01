@@ -36,4 +36,9 @@ public class BannerServiceImpl implements BannerService {
     public void delete(Integer id) {
         bannerDAO.delete(id);
     }
+
+    @Override
+    public Integer query() {
+        return bannerDAO.query();
+    }
 }

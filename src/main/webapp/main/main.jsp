@@ -14,17 +14,6 @@
 <script type="text/javascript" src="../js/datagrid-detailview.js"></script>
 <script type="text/javascript">
 	<!--菜单处理-->
-    // 封装添加选项卡操作
-    var $tab;
-    function addTab(options){// options 代表同一个对象
-        // 判断是否存在对应的选项卡
-        var b = $('#tab1').tabs('exists',options.title);
-        if(!b){// 如果不存在
-            $('#tab1').tabs('add',options);
-        }else{
-            $('#tab1').tabs('select',options.title);
-        }
-    }
     $(function () {
         $.ajax({
             type:"post",
@@ -51,13 +40,13 @@
     function addTabs(iconCls,title,href) {
         var flag=$("#tt").tabs("exists",title);
         if(flag){
-            $("#tt").tabs("select",title)
+            $("#tt").tabs("select",title);
         }else {
             $("#tt").tabs("add",{
                 title:title,
                 selected:true,
                 closable:true,
-                href:"${pageContext.request.contextPath}/datagird/banner.jsp"
+                href:"${pageContext.request.contextPath}"+href
             });
         }
     }
@@ -77,7 +66,7 @@
     	<div id="aa" class="easyui-accordion" data-options="fit:true">
 		</div>
     </div>   
-    <div id="tab1" data-options="region:'center'">
+    <div data-options="region:'center'">
         <div id="tt" class="easyui-tabs" data-options="fit:true,narrow:true,pill:true">
             <div title="主页" data-options="iconCls:'icon-neighbourhood',"
                  style="background-image:url(image/shouye.jpg);background-repeat: no-repeat;background-size:100% 100%;"></div>

@@ -7,38 +7,34 @@
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
     <meta http-equiv="description" content="this is my page">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    
 	<link rel="icon" href="img/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="css/common.css" type="text/css"></link>
 	<link rel="stylesheet" href="css/login.css" type="text/css"></link>
-	<script type="text/javascript" src="script/jquery.js"></script>
-	<script type="text/javascript" src="script/common.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
-	
 		$(function(){
 			//点击更换验证码：
 			$("#captchaImage").click(function(){//点击更换验证码
                 this.src = '${pageContext.request.contextPath }/captcha/createCaptcha.do?'+(new Date()).getTime();
 			});
-			
 			//  form 表单提交
-            $("#login").click(function(){
-                var username = $("#username").val();
-				var password = $("#password").val();
-                $.ajax({
-                    type:"post",
-                    url:"${pageContext.request.contextPath}/admin/login",
-                    data:"username="+username&"password"+password,
-                    dataType:"text",
-                    success:function(result){
-                        if(result==null){
-                            return false
-                        }else{
-                            location.href='${pageContext.request.contextPath}/main/main.jsp';
-                            return true;
-                        }
+            $("#loginForm").form({
+				url:'${pageContext.request.contextPath}/admin/login',
+				onSubmit:function (data) {
+				    if(data==null){
+				        return false;
+                    }else{
+				        return true;
                     }
-                });
+                },
+				success:function (data) {
+					location.href='${pageContext.request.contextPath}/main/main.jsp';
+                }
+			});
+            $('#login').click(function () {
+                $("#loginForm").submit();
 
             });
 
@@ -49,7 +45,6 @@
 	
 		<div class="login">
 			<form id="loginForm" action="" method="post" >
-				
 				<table>
 					<tbody>
 						<tr>
@@ -60,7 +55,7 @@
 								用户名:
 							</th>
 							<td>
-								<input type="text"  name="username" class="text"  maxlength="20" id="username"/>
+								<input name="username" class="easyui-textbox"  maxlength="20" id="username" data-options="required:true"/>
 							</td>
 					  </tr>
 					  <tr>
@@ -68,7 +63,7 @@
 								密&nbsp;&nbsp;&nbsp;码:
 							</th>
 							<td>
-								<input type="password" name="password" class="text"  maxlength="20" autocomplete="off" id="password"/>
+								<input name="password" class="easyui-passwordbox"  maxlength="20" autocomplete="off" id="password" data-options="required:true," />
 							</td>
 					  </tr>
 					

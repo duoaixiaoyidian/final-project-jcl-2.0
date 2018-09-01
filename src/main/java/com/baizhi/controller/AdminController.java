@@ -23,12 +23,12 @@ public class AdminController {
         adminService.addAdmin(admin);
         return "/main/main";
     }
-    @RequestMapping("/login.do")
+    @RequestMapping("/login")
     @ResponseBody
-    public ModelAndView login(String username,String password,String clientCode,HttpSession session ){
+    public ModelAndView login(String username,String password,String enCode,HttpSession session ){
         ModelAndView mv = new ModelAndView();
 		String serverCode = (String) session.getAttribute("serverCode");
-		if(serverCode.equalsIgnoreCase(clientCode)){
+		if(serverCode.equalsIgnoreCase(enCode)){
             Admin admin = adminService.queryAdmin(username,password);
 			if(username.equals(admin.getUsername()) && password.equals(password)){
 				session.setAttribute("flag", "ok");

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.AlbumDAO">
+    <insert id="addAlbum" parameterType="Album">
+        insert INTO ablum values (#{id},#{title},#{count},#{corverImg},#{score},#{author},#{broadCast},#{brief},#{publicDate},#{createDate},#{status})
+
+    </insert>
+    <delete id="deleteAlbum" parameterType="Album">
+        delete from album where id=#{id}
+    </delete>
+    <resultMap id="all" type="com.baizhi.entity.Album">
+        <id property="id" column="aid"/>
+        <result property="title" column="atitle"/>
+        <result property="count" column="ac"/>
+        <result property="corverImg" column="aco"/>
+        <result property="score" column="ascore"/>
+        <result property="author" column="aa"/>
+        <result property="broadCast" column="ab"/>
+        <result property="brief" column="abr"/>
+        <result property="publicDate" column="ap"/>
+        <result property="createDate" column="acr"/>
+        <result property="status" column="ast"/>
+    <collection property="children" ofType="com.baizhi.entity.Chapter">
+            <id property="id" column="cid"/>
+            <result property="title" column="ct"/>
+            <result property="duration" column="cd"/>
+            <result property="size" column="cs"/>
+            <result property="audioPath" column="ca"/>
+        </collection>
+    </resultMap>
+    <select id="queryAllAlbums" resultMap="all">
+      SELECT
+            a.id aid,
+            a.title atitle,
+            a.count ac,
+            a.corverImg aco,
+            a.score ascore,
+            a.author aa,
+            a.broadCast ab,
+            a.brief abr,
+            a.publicDate ap,
+            a.createDate acr,
+            a.STATUS ast,
+            c.id cid,
+            c.title ct,
+            c.duration cd,
+            c.size cs,
+            c.audioPath ca
+    FROM
+        album a
+    LEFT JOIN chapter c ON c.album_id = a.id
+
+    </select>
+    <select id="queryAlbumById" parameterType="Album" resultType="Album">
+        SELECT * from album where id=#{id}
+    </select>
+</mapper>
+
+
+
+
+
+
+

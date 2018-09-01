@@ -13,41 +13,13 @@
             iconCls: 'icon-edit',
             text: "添加",
             handler: function () {
-                $('#dg').dialog({
-                    title:'添加轮播图片',
-                    iconCls:'icon-add',
-                    width:600,
-                    height:300,
-                    buttons:[{
-                        text:'提交',
-                        iconCls:'icon-ok',
-                        handler:function () {
-                            $('#fom').submit();
-
-                        }
-                    }]
-                });
-                $('#fom').form({
-                    url:"${pageContext.request.contextPath}/banner/add",
-                    onSubmit:function () {
-                        var b =$('#fom').form('validate');
-                        if(b){
-                            return true;
-                        }else{
-                            return false;
-                        }
-                    },
-                    success: function() {
-                        $("#dg").dialog("close");
-                        $("#tb").datagrid("load");
-                    }
-                });
+                $('#banner_div').dialog("open");
             }
         }, '-', {
             text: "删除",
             iconCls: 'icon-control_remove_blue',
             handler: function () {
-                var row = $("#tb").edatagrid("getSelected");
+                var row = $("#banner_table").edatagrid("getSelected");
                 if(row){
                     var id =row.id;
                     $.ajax({
@@ -56,7 +28,7 @@
                         data:"id="+id,
                         dataType:"text",
                         success:function(){
-                            $("#tb").datagrid("load");
+                            $("#banner_table").edatagrid("load");
                         }
                     });
                 }else {
@@ -70,14 +42,13 @@
                 /*
                  *使当前选中行可编辑模式
                  * */
-                var row = $("#tb").edatagrid("getSelected");
+                var row = $("#banner_table").edatagrid("getSelected");
                 if (row != null) {
 
-                    var index = $("#tb").edatagrid("getRowIndex", row);
+                    var index = $("#banner_table").edatagrid("getRowIndex", row);
                     //当前行可编辑
-                    $("#tb").edatagrid("editRow", index)
-
-                } else {
+                    $("#banner_table").edatagrid("editRow", index);
+                }else {
                     alert("请先选中行")
                 }
             }
@@ -85,26 +56,52 @@
             text: "保存",
             iconCls: 'icon-script_save',
             handler: function () {
-                $("#tb").edatagrid("saveRow")
+                $("#banner_table").edatagrid('saveRow');
+                $("#banner_table").edatagrid("load");
             }
         }]
         
-        $("#tb").edatagrid({
+        $("#banner_table").edatagrid({
            url: '${pageContext.request.contextPath}/banner/queryAll',
-           method: 'post',
-           updateUrl:"${pageContext.request.contextPath}/banner/add",//通过URL更新数据到服务器并返回更新的行
+           method: "post",
+           updateUrl: "${pageContext.request.contextPath}/banner/update",
            columns:[[
-               {field:'id',title:'编号',width:100},
-               {field:'title',title:'名称',width:100},
-               {field:'imgPath',title:'图片',width:100},
+               {field:'id',title:'编号',width:100,editor:{
+                   type:"text",
+                   options:{
+                       required:true
+                   }
+               }},
+               {field:'title',title:'名称',width:100,editor:{
+                   type:"text",
+                   options:{
+                       required:true
+                   }
+               }},
+               {field:'imgPath',title:'图片路径',width:100,editor:{
+                   type:"text",
+                   options:{
+                       required:true
+                   }
+               }},
                {field:'status',title:'状态',width:100,editor:{
                 type:"text",
                    options:{
                        required:true
                    }
                }},
-               {field:'description',title:'描述',width:100 },
-               {field:'createDate',title:'上传时间',width:100}
+               {field:'description',title:'图片描述',width:100,editor:{
+                   type:"text",
+                   options:{
+                       required:true
+                   }
+               }},
+               {field:'createDate',title:'上传日期',width:100,editor:{
+                   type:"text",
+                   options:{
+                       required:true
+                   }
+               }}
            ]],
             fitColumns:true,
             fit:true,
@@ -124,29 +121,50 @@
             }
         });
     });
-
+    function submit() {
+        $("#banner_form").form("submit", {
+            url: "${pageContext.request.contextPath}/banner/add",
+            onSubmit:function(){
+                return true;
+            },
+        })
+    }
 </script>
 
-<table id="tb"></table>
-
-
-<div id="dg" style="padding:20px;">
-    <form id="fom">
-        <input id="dd" name="id" type="hidden" />
+<table id="banner_table"></table>
+<div id="banner_div" class="easyui-dialog" title="添加轮播图" style="width:400px;height:350px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,width:600,height:500,buttons:[{
+				text:'保存',
+				handler:function(){
+                     submit();
+                      $('#banner_div').dialog('close');
+                      $('#banner_table').edatagrid('reload')
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+                     $('#banner_div').dialog('close');
+				}
+			}]">
+    <form id="banner_form" enctype="multipart/form-data" method="post">
+        <input name="id" type="hidden"/>
         <div class="in">
-             Title<input id="title" name="title" class="easyui-textbox" data-options="required:true"/>
+             名称:<input name="title" class="easyui-validatebox" data-options="required:true"/>
         </div>
         <div class="in">
-            ImgPath<input id="img" name="imgPath" class="easyui-textbox" data-options="required:true"/>
+            图片路径:<input  name="img" class="easyui-filebox" data-options="required:true"/>
         </div>
         <div class="in">
-            Description<input id="description" name="description" class="easyui-textbox" data-options="required:true"/>
+            图片描述:<input name="description" class="easyui-textbox" data-options="required:true"/>
         </div>
         <div class="in">
-            Status<input id="status" name="status" class="easyui-textbox" data-options="required:true"/>
+            状态:<select  class="easyui-combobox" name="status" style="width:200px;">
+                    <option value="Y">展示</option>
+                    <option value="N">不展示</option>
+                  </select>
         </div>
-        <%--<div class="in">
-           CreateDate<input id="create" name="createDate" class="easyui-datetimebox" data-options="required:true"/>
-        </div>--%>
+        <div class="in">
+           上传日期:<input  name="createDate" class="easyui-datetimebox" data-options="required:true"/>
+        </div>
     </form>
 </div>
